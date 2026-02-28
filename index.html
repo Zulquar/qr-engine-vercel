@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><title>QR Engine</title>
+<style>
+  body { background: #0f1117; color: #e8eaf6; font-family: sans-serif; padding: 20px; }
+  .card { background: #21253a; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+  input, select, textarea { width: 100%; background: #1a1d27; border: 1px solid #2e3248; padding: 10px; color: white; margin-bottom: 10px; }
+  button { padding: 10px 20px; background: #6c63ff; color: white; border: none; border-radius: 8px; cursor: pointer; }
+</style>
+</head><body>
+  <div class="card">
+    <h2>QR Engine</h2>
+    <input type="text" id="rawText" placeholder="Enter text...">
+    <button onclick="gen()">Generate</button>
+    <div id="out"></div>
+  </div>
+  <script>
+    async function gen() {
+      let t = document.getElementById('rawText').value;
+      let r = await fetch('/api', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'generateRaw',data:{text:t}})});
+      let d = await r.json();
+      document.getElementById('out').innerHTML = '<img src="'+d.data.qrDataUri+'">';
+    }
+  </script>
+</body></html>
